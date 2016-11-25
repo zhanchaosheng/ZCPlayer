@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11201" systemVersion="16A323" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11161"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ZCPlayerViewController" customModule="ZCPlayer" customModuleProvider="target">
+            <connections>
+                <outlet property="bufferProgress" destination="WTE-Hv-Rm1" id="a2O-RW-eNZ"/>
+                <outlet property="currentTimeLabel" destination="eUx-ZF-9oL" id="DRL-sl-4J4"/>
+                <outlet property="playBtn" destination="c5P-sz-6su" id="do4-Gh-Bvh"/>
+                <outlet property="playProgress" destination="epK-4r-E6O" id="4et-PH-Cim"/>
+                <outlet property="playerView" destination="Sj0-bX-gZH" id="9MV-e1-vIS"/>
+                <outlet property="toolView" destination="XgT-dj-o1a" id="dAS-fX-8gw"/>
+                <outlet property="totalTimeLabel" destination="XQf-uC-oVc" id="5I6-dr-tPO"/>
+                <outlet property="totateBtn" destination="yhL-Gr-4QO" id="gaC-dy-sXR"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="180"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Sj0-bX-gZH" userLabel="PlayerView">
+                    <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tqc-E4-FUn">
+                    <subviews>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XgT-dj-o1a" userLabel="ToolView">
+                            <subviews>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="c5P-sz-6su" userLabel="PlayBtn">
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="44" id="rS8-VU-kdO"/>
+                                    </constraints>
+                                    <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                    <state key="normal" image="MoviePlayer_Stop"/>
+                                    <connections>
+                                        <action selector="playOrPuse:" destination="-1" eventType="touchUpInside" id="OQH-eo-Uoc"/>
+                                    </connections>
+                                </button>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00:00" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eUx-ZF-9oL" userLabel="Current Time Label">
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="42" id="Hvg-cY-SK7"/>
+                                    </constraints>
+                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                    <color key="textColor" red="0.83137254900000002" green="0.82745098039999998" blue="0.84313725490000002" alpha="1" colorSpace="calibratedRGB"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="WTE-Hv-Rm1" userLabel="Buffer Progress">
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="1" id="0LL-7L-IfH"/>
+                                    </constraints>
+                                    <color key="progressTintColor" red="0.34117648010000001" green="0.62352943419999995" blue="0.16862745579999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </progressView>
+                                <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="epK-4r-E6O" userLabel="Play Progress">
+                                    <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <color key="minimumTrackTintColor" cocoaTouchSystemColor="lightTextColor"/>
+                                    <color key="maximumTrackTintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                    <connections>
+                                        <action selector="playerSliderChanged:" destination="-1" eventType="valueChanged" id="5JJ-bJ-KnU"/>
+                                        <action selector="playerSliderDown:" destination="-1" eventType="touchDown" id="UlO-TR-12i"/>
+                                        <action selector="playerSliderInside:" destination="-1" eventType="touchUpInside" id="nyh-y1-zPx"/>
+                                    </connections>
+                                </slider>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00:00" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XQf-uC-oVc" userLabel="Total Time Label">
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="42" id="w5W-VN-ma7"/>
+                                    </constraints>
+                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                    <color key="textColor" red="0.83137254900000002" green="0.82745098039999998" blue="0.84313725490000002" alpha="1" colorSpace="calibratedRGB"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yhL-Gr-4QO" userLabel="Totate Btn">
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="44" id="7Lf-AN-fxo"/>
+                                    </constraints>
+                                    <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                    <state key="normal" image="MoviePlayer_Full"/>
+                                    <connections>
+                                        <action selector="totateBtnClicked:" destination="-1" eventType="touchUpInside" id="jjd-vn-UaL"/>
+                                    </connections>
+                                </button>
+                            </subviews>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="44" id="02c-5u-Q4t"/>
+                                <constraint firstItem="c5P-sz-6su" firstAttribute="top" secondItem="XgT-dj-o1a" secondAttribute="top" id="EX8-Qj-0hG"/>
+                                <constraint firstItem="WTE-Hv-Rm1" firstAttribute="centerY" secondItem="XgT-dj-o1a" secondAttribute="centerY" id="HXt-NH-4h9"/>
+                                <constraint firstItem="epK-4r-E6O" firstAttribute="centerY" secondItem="XgT-dj-o1a" secondAttribute="centerY" id="I8P-Tx-VVy"/>
+                                <constraint firstItem="XQf-uC-oVc" firstAttribute="leading" secondItem="epK-4r-E6O" secondAttribute="trailing" constant="10" id="JWO-VG-HuJ"/>
+                                <constraint firstItem="yhL-Gr-4QO" firstAttribute="leading" secondItem="XQf-uC-oVc" secondAttribute="trailing" id="VT4-lq-gDr"/>
+                                <constraint firstItem="eUx-ZF-9oL" firstAttribute="leading" secondItem="c5P-sz-6su" secondAttribute="trailing" id="Vyo-ae-mRx"/>
+                                <constraint firstItem="XQf-uC-oVc" firstAttribute="top" secondItem="XgT-dj-o1a" secondAttribute="top" id="b1V-sS-7qZ"/>
+                                <constraint firstAttribute="trailing" secondItem="yhL-Gr-4QO" secondAttribute="trailing" id="dos-9v-UYI"/>
+                                <constraint firstItem="WTE-Hv-Rm1" firstAttribute="leading" secondItem="XgT-dj-o1a" secondAttribute="leading" constant="96" id="e2K-kY-mNz"/>
+                                <constraint firstAttribute="bottom" secondItem="eUx-ZF-9oL" secondAttribute="bottom" id="eCJ-ac-Rxj"/>
+                                <constraint firstAttribute="bottom" secondItem="XQf-uC-oVc" secondAttribute="bottom" id="gMA-ZP-9HW"/>
+                                <constraint firstAttribute="trailing" secondItem="WTE-Hv-Rm1" secondAttribute="trailing" constant="96" id="n3d-yh-DbV"/>
+                                <constraint firstItem="epK-4r-E6O" firstAttribute="leading" secondItem="eUx-ZF-9oL" secondAttribute="trailing" constant="10" id="rUd-0p-dCK"/>
+                                <constraint firstItem="c5P-sz-6su" firstAttribute="leading" secondItem="XgT-dj-o1a" secondAttribute="leading" id="s1d-Gb-IIq"/>
+                                <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="44" id="sPB-5B-mlB"/>
+                                <constraint firstAttribute="bottom" secondItem="c5P-sz-6su" secondAttribute="bottom" id="t1v-5l-dOF"/>
+                                <constraint firstAttribute="bottom" secondItem="yhL-Gr-4QO" secondAttribute="bottom" id="vX7-dW-1AZ"/>
+                                <constraint firstItem="eUx-ZF-9oL" firstAttribute="top" secondItem="XgT-dj-o1a" secondAttribute="top" id="x6v-p8-q3a"/>
+                                <constraint firstItem="yhL-Gr-4QO" firstAttribute="top" secondItem="XgT-dj-o1a" secondAttribute="top" id="zqO-vh-LIv"/>
+                            </constraints>
+                        </view>
+                    </subviews>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstItem="XgT-dj-o1a" firstAttribute="leading" secondItem="tqc-E4-FUn" secondAttribute="leading" id="12h-qe-BdR"/>
+                        <constraint firstAttribute="bottom" secondItem="XgT-dj-o1a" secondAttribute="bottom" id="eEs-aW-wm2"/>
+                        <constraint firstAttribute="trailing" secondItem="XgT-dj-o1a" secondAttribute="trailing" id="qci-LE-xkr"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="tqc-E4-FUn" firstAttribute="bottom" secondItem="Sj0-bX-gZH" secondAttribute="bottom" id="GV1-Ii-jd5"/>
+                <constraint firstItem="tqc-E4-FUn" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="Hnu-ho-Ur8"/>
+                <constraint firstItem="tqc-E4-FUn" firstAttribute="trailing" secondItem="Sj0-bX-gZH" secondAttribute="trailing" id="Jgt-Cx-2gH"/>
+                <constraint firstAttribute="bottom" secondItem="Sj0-bX-gZH" secondAttribute="bottom" id="MZ5-1L-eP1"/>
+                <constraint firstItem="Sj0-bX-gZH" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="PQs-1k-I8i"/>
+                <constraint firstItem="tqc-E4-FUn" firstAttribute="top" secondItem="Sj0-bX-gZH" secondAttribute="top" id="oxh-yC-fjQ"/>
+                <constraint firstItem="Sj0-bX-gZH" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="uXj-UN-teB"/>
+                <constraint firstAttribute="trailing" secondItem="Sj0-bX-gZH" secondAttribute="trailing" id="zDM-OJ-v8M"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <point key="canvasLocation" x="-627" y="-984"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="MoviePlayer_Full" width="35" height="35"/>
+        <image name="MoviePlayer_Stop" width="35" height="35"/>
+    </resources>
+</document>
