@@ -20,17 +20,35 @@ class ZCPlayerViewController: UIViewController {
     @IBOutlet weak var totalTimeLabel: UILabel!
     @IBOutlet weak var totateBtn: UIButton!
     
+    var playUrl:String?
+    var containViewController:UIViewController?
+    
     var player:AVPlayer?
     var playerItem:AVPlayerItem?
     var playerLayer:AVPlayerLayer?
     
     var isPlaying:Bool = false
+    var isFullScrean:Bool = false
     var periodicTimeObserver:Any?
     var lastPlaybackRate: Float = 0.0
     
-//    convenience init(url strUrl:String) {
-//        super.init()
-//    }
+    var superView:UIView?
+    var originalRect:CGRect?
+    
+
+    func prepareToPlay(url strURL: String, container containVC:UIViewController) {
+        
+        containViewController = containVC
+        
+        guard let url = URL(string:strURL) else {
+            return
+        }
+        playerItem = AVPlayerItem(url: url)
+        playerItem?.addObserver(self, forKeyPath: "status", options: .new, context: nil)
+        playerItem?.addObserver(self, forKeyPath: "loadedTimeRanges", options: .new, context: nil)
+        
+        player?.replaceCurrentItem(with: playerItem)
+    }
     
     // MARK: - life cycle
     
@@ -40,11 +58,7 @@ class ZCPlayerViewController: UIViewController {
         playBtn.isEnabled = false
         toolView.backgroundColor = #colorLiteral(red: 0.2549019754, green: 0.2745098174, blue: 0.3019607961, alpha: 1).withAlphaComponent(0.5)
 
-        playerItem = AVPlayerItem(url: URL(string:"http://120.25.226.186:32812/resources/videos/minion_01.mp4")!)
-        playerItem?.addObserver(self, forKeyPath: "status", options: .new, context: nil)
-        playerItem?.addObserver(self, forKeyPath: "loadedTimeRanges", options: .new, context: nil)
-        
-        player = AVPlayer(playerItem: playerItem)
+        player = AVPlayer()
         playerLayer = AVPlayerLayer(player: player)
         playerView.layer.addSublayer(playerLayer!)
         
@@ -71,6 +85,15 @@ class ZCPlayerViewController: UIViewController {
         if let observer = periodicTimeObserver {
             player?.removeTimeObserver(observer)
             periodicTimeObserver = nil
+        }
+    }
+    
+    override var prefersStatusBarHidden: Bool {
+        get {
+            if isFullScrean {
+                return true
+            }
+            return false
         }
     }
     
@@ -108,14 +131,6 @@ class ZCPlayerViewController: UIViewController {
         }
     }
     
-    func playbackFinished(_ notification:Notification) {
-        // 播放完成
-        playerItem?.seek(to: kCMTimeZero,
-                         completionHandler: { [weak self] finished in
-                            self?.pause()
-            })
-    }
-    
     @IBAction func playOrPuse(_ sender: UIButton) {
         print("playOrPuse")
         if isPlaying {
@@ -128,6 +143,16 @@ class ZCPlayerViewController: UIViewController {
     
     @IBAction func totateBtnClicked(_ sender: UIButton) {
         print("totateBtnClicked")
+        if isFullScrean {
+            // 退出全屏
+            isFullScrean = false
+            originalScrean()
+        }
+        else {
+            // 全屏
+            isFullScrean = true
+            fullScrean()
+        }
     }
     
     @IBAction func playerSliderDown(_ sender: UISlider) {
@@ -203,5 +228,89 @@ class ZCPlayerViewController: UIViewController {
                                                selector: #selector(playbackFinished(_:)),
                                                name: NSNotification.Name.AVPlayerItemDidPlayToEndTime,
                                                object: nil)
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(enterForeground(_:)),
+                                               name: NSNotification.Name.UIApplicationWillEnterForeground,
+                                               object: nil)
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(enterBackground(_:)),
+                                               name: NSNotification.Name.UIApplicationDidEnterBackground,
+                                               object: nil)
+    }
+    
+    func playbackFinished(_ notification:Notification) {
+        // 播放完成
+        playerItem?.seek(to: kCMTimeZero,
+                         completionHandler: { [weak self] finished in
+                            self?.pause()
+            })
+    }
+    
+    func enterForeground(_ notification:Notification) {
+        // 返回前台
+        if lastPlaybackRate > 0.0 {
+            play()
+        }
+    }
+    
+    func enterBackground(_ notification:Notification) {
+        // 进入后台
+        pause()
+    }
+    
+    func fullScrean() {
+        
+        superView = view.superview
+        originalRect = view.frame
+        
+        if let container = containViewController {
+            view.removeFromSuperview()
+            container.present(self, animated: false, completion: { 
+                UIView.animate(withDuration: 0.25) {
+                    self.view.transform = CGAffineTransform(rotationAngle: CGFloat(M_PI / 2))
+                }
+                self.view.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
+                self.playerView.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.height, height: UIScreen.main.bounds.width)
+            })
+        }
+        else {
+            if let appDelegate = UIApplication.shared.delegate as? AppDelegate {
+                view.removeFromSuperview()
+                appDelegate.window?.addSubview(view)
+            }
+            UIView.animate(withDuration: 0.25) {
+                self.view.transform = CGAffineTransform(rotationAngle: CGFloat(M_PI / 2))
+            }
+            view.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
+            playerView.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.height, height: UIScreen.main.bounds.width)
+        }
+        
+        
+    }
+    
+    func originalScrean() {
+        
+        if let container = containViewController {
+            container.dismiss(animated: false, completion: { 
+                UIView.animate(withDuration: 0.25) {
+                    self.view.transform = CGAffineTransform.identity
+                }
+                self.view.frame = self.originalRect!
+                self.playerView.frame = self.view.frame
+                self.superView?.addSubview(self.view)
+            })
+        }
+        else {
+            view.removeFromSuperview()
+            UIView.animate(withDuration: 0.25) {
+                self.view.transform = CGAffineTransform.identity
+            }
+            view.frame = originalRect!
+            playerView.frame = view.frame
+            superView?.addSubview(view)
+        }
+        
+        
     }
 }
+

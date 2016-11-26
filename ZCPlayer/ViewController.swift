@@ -21,6 +21,8 @@ class ViewController: UIViewController {
         playerViewController = ZCPlayerViewController()
         if let playerVC = playerViewController {
             playerVC.view.frame = playerViewRect
+            playerVC.prepareToPlay(url: "http://120.25.226.186:32812/resources/videos/minion_01.mp4",
+                                   container:self)
             view.addSubview(playerVC.view)
         }
     }
