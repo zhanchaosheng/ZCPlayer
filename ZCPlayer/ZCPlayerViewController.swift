@@ -21,7 +21,7 @@ class ZCPlayerViewController: UIViewController {
     @IBOutlet weak var totateBtn: UIButton!
     
     var playUrl:String?
-    var containViewController:UIViewController?
+    weak var containViewController:UIViewController?
     
     var player:AVPlayer?
     var playerItem:AVPlayerItem?
@@ -32,7 +32,7 @@ class ZCPlayerViewController: UIViewController {
     var periodicTimeObserver:Any?
     var lastPlaybackRate: Float = 0.0
     
-    var superView:UIView?
+    weak var superView:UIView?
     var originalRect:CGRect?
     
 
