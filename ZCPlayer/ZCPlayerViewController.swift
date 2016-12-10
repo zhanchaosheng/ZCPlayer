@@ -35,6 +35,16 @@ class ZCPlayerViewController: UIViewController {
     weak var superView:UIView?
     var originalRect:CGRect?
     
+    init(url strURL: String, container containVC:UIViewController) {
+        playUrl = strURL
+        containViewController = containVC
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+    }
+    
 
     func prepareToPlay(url strURL: String, container containVC:UIViewController) {
         
@@ -58,7 +68,15 @@ class ZCPlayerViewController: UIViewController {
         playBtn.isEnabled = false
         toolView.backgroundColor = #colorLiteral(red: 0.2549019754, green: 0.2745098174, blue: 0.3019607961, alpha: 1).withAlphaComponent(0.5)
 
-        player = AVPlayer()
+        if let strUrl = playUrl, let url = URL(string:strUrl) {
+            playerItem = AVPlayerItem(url: url)
+            playerItem?.addObserver(self, forKeyPath: "status", options: .new, context: nil)
+            playerItem?.addObserver(self, forKeyPath: "loadedTimeRanges", options: .new, context: nil)
+            player = AVPlayer(playerItem: playerItem)
+        }
+        else {
+            player = AVPlayer()
+        }
         playerLayer = AVPlayerLayer(player: player)
         playerView.layer.addSublayer(playerLayer!)
         

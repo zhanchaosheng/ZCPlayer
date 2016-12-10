@@ -18,11 +18,12 @@ class ViewController: UIViewController {
         let width = UIScreen.main.bounds.width
         let height = width / 16 * 9
         let playerViewRect = CGRect(x: 0, y: 20, width: width, height: height)
-        playerViewController = ZCPlayerViewController()
+        playerViewController = ZCPlayerViewController(url: "http://120.25.226.186:32812/resources/videos/minion_01.mp4",
+                                                      container:self)
         if let playerVC = playerViewController {
             playerVC.view.frame = playerViewRect
-            playerVC.prepareToPlay(url: "http://120.25.226.186:32812/resources/videos/minion_01.mp4",
-                                   container:self)
+//            playerVC.prepareToPlay(url: "http://120.25.226.186:32812/resources/videos/minion_01.mp4",
+//                                   container:self)
             view.addSubview(playerVC.view)
         }
     }
